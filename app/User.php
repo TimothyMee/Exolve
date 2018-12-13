@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'username', 'email', 'phone', 'password', 'image', 'role',  'isLive', 'deleted_by', 'deleted_at'
     ];
 
     /**
@@ -27,4 +27,30 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     *  Create new user
+     * @param user
+     * @return user Object
+     */
+    public function createNew($user)
+    {
+        $user['role'] = "user";
+        $user['password'] = bcrypt($user['password']);
+        return $this->create($user);
+    }
+
+    public function edit($data)
+    {
+        return $this->where('id', auth()->id())
+                    ->update(['email' => $data['email'],
+                                'username' => $data['username'],
+                                'phone' => $data['phone'],
+                                'image' => $data['image']]);
+    }
+
+    public function getAll()
+    {
+        return $this->all();
+    }
 }
