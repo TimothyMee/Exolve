@@ -99,6 +99,7 @@
             </div>
             <li>
                 <a href="{{route('admin.home')}}" class="text-white active"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Home</a>
+                <a href="{{route('admin.categories')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Categories</a>
                 <a href="{{route('admin.videos')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/time-left.png"></span> Videos</a>
 
             </li>
@@ -141,80 +142,10 @@
         </nav>
 
         <!--    Main form Body starts or goes here-->
-
-
-
-        <div class="container-fluid">
-            <div class="row">
-
-                <div class="container bg_2">
-
-
-                    <div class="col-md-12 property_info">
-                        @if(session('success'))
-                            <div class="col-md-10">
-                                <div class="alert alert-success">
-                                    <p>{{session('success')}}</p>
-                                </div>
-                            </div>
-
-                            <br><br>
-
-                        @elseif(session('error'))
-                            <div class="col-md-10">
-                                <div class="alert alert-danger">
-                                    <p>Category wasn't created. Try again later</p>
-                                </div>
-                            </div>
-
-                            <br>
-                        @endif
-                        <div class="row">
-                            <div class="row col-md-6 text-white">
-                                <div class="col-md-12">
-                                    <h3 class="text-white">Categories</h3>
-                                    <hr>
-                                    @if(count($categories) > 0)
-                                        <table class="table table-hover">
-                                            <thead>
-                                            <tr>
-                                                <th>S/N</th>
-                                                <th>Name</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            @for($i = 0; $i<count($categories); $i++)
-                                            <tr>
-                                                <td>{{$i + 1}}</td>
-                                                <td>{{$categories[$i]['name']}}</td>
-                                            </tr>
-                                            @endfor
-
-                                            </tbody>
-                                        </table>
-                                    @else
-                                    <h6>You haven't Created any categories</h6>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 text-white" style="border-left: 1px solid">
-                                <h3 class="text-white">Create Categories</h3>
-                                <hr>
-                                <form action="{{route('add-category')}}" method="post">
-                                    {{csrf_field()}}
-                                    <label for="">Category Name:</label>
-                                    <input type="text" name="name" class="form-control">
-                                    <br>
-                                    <input class="btn btn" type="submit" value="Add Category"/>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
+        <div id="app">
+            <admin-index></admin-index>
         </div>
+
 
         <!--    main form ends here-->
     </div>

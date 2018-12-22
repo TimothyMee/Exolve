@@ -18,6 +18,9 @@ Route::get('/', function () {
 Route::get('/category/get-all', 'CategoryController@getAllWithVideos');
 Route::get('/user/get-all', 'UserController@getAll');
 Route::get('/video/add-view/{id}', 'VideoController@addView');
+Route::get('/video/all', 'VideoController@getAllVideos');
+Route::get('/video/pending', 'VideoController@getPending');
+Route::get('/video/details/{id}', 'VideoController@getVideo');
 
 
 
@@ -33,12 +36,13 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/add', 'DashboardController@add')->name('add-video');
         Route::post('/add', 'DashboardController@addVideo')->name('upload-video');
         Route::get('/pending', 'DashboardController@pending')->name('pending-video');
-        Route::get('/promote', 'DashboardController@promote')->name('promote-video');
-        Route::get('/go-live/{id}', 'DashboardController@goLive')->name('go-live');
+//        Route::get('/promote', 'DashboardController@promote')->name('promote-video');
+//        Route::get('/go-live/{id}', 'DashboardController@goLive')->name('go-live');
     });
 
     Route::group(['prefix'=> 'admin', 'middleware' =>['admin']], function (){
         Route::get('/index', 'AdminController@index')->name('admin.home');
+        Route::get('/categories', 'AdminController@categories')->name('admin.categories');
         Route::get('/video', 'AdminController@video')->name('admin.videos');
         Route::get('/video/approve/{id}', 'AdminController@approve');
         Route::post('/add-category', 'CategoryController@add')->name('add-category');

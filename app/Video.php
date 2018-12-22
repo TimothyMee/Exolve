@@ -9,11 +9,26 @@ class Video extends Model
     protected $fillable = ['user_id', 'title', 'category_id', 'description', 'status', 'admin_id',
                             'video', 'likes', 'views', 'comments', 'isLive'];
 
+    public function category()
+    {
+        return $this->belongsTo('App\Category');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
     public function createNew($data)
     {
         $data['user_id'] = auth()->id();
         $data['status'] = "pending";
         return $this->create($data);
+    }
+
+    public function getAll()
+    {
+        return $this->with('user', 'category')->get();
     }
 
     public function getVideo($id)
@@ -56,12 +71,13 @@ class Video extends Model
     public function getUnapproved()
     {
         return $this->where('status', "pending")
+                    ->with('user', 'category')
                     ->get();
     }
 
     public function Approve($id)
     {
         return $this->where('id', $id)
-                    ->update(['status' => 'approved']);
+                    ->update(['status' => 'approved', 'isLive' => 1]);
     }
 }

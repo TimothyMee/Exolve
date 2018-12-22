@@ -11,9 +11,11 @@ window.Vue = require('vue');
 
 import Notifications from 'vue-notification'
 import moment from 'moment'
+import {ClientTable, ServerTable, Event} from 'vue-tables-2';
 
 
 Vue.use(Notifications);
+Vue.use(ClientTable, {}, false, 'bootstrap4','default');
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -25,6 +27,7 @@ Vue.use(Notifications);
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('video-component', require('./components/video.vue'));
 Vue.component('dashboard-index', require('./components/dashboard/Index.vue'));
+Vue.component('admin-index', require('./components/admin/Index.vue'));
 
 
 Vue.prototype.moment = moment;

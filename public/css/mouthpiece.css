@@ -20,7 +20,7 @@ body{
 }
 
 .bbimg{
- background-image: linear-gradient(#00000099,#000000b0), url(../IMG/pexels-photo.png);
+ background-image: linear-gradient(#00000099,#000000b0), url(../img/pexels-photo.png);
  background-position: center;
  background-repeat: no-repeat;
  background-size: cover;

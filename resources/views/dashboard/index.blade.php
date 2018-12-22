@@ -110,7 +110,7 @@
                 <a href="#" class="text-white"><span><img class="pr-4 pb-1" src="/img/analytics.png" alt="analytics" ></span> Analytics</a>
             </li>
             <li>
-                <a href="{{route('promote-video')}}" class=" text-white"><span><img class="pr-4 pb-1" src="/img/promote.png" alt="promote" ></span> Promote</a>
+                <a href="#" class=" text-white"><span><img class="pr-4 pb-1" src="/img/promote.png" alt="promote" ></span> Promote</a>
             </li>
 
         </ul>

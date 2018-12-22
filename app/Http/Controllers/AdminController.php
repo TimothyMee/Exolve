@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\User;
 use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +12,14 @@ class AdminController extends Controller
 {
     public function index()
     {
+        return view('admin.index');
+    }
+
+    public function categories()
+    {
         $category = new Category();
         $result = $category->getAll();;
-        return view('admin.index')->with('categories', $result);
+        return view('admin.categories')->with('categories', $result);
     }
 
     public function video()

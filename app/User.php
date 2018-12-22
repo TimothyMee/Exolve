@@ -49,6 +49,11 @@ class User extends Authenticatable
                                 'image' => $data['image']]);
     }
 
+    public function getUsers()
+    {
+        return $this->where('role', 'user')->get();
+    }
+
     public function getAll()
     {
         return $this->all();

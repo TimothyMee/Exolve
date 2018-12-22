@@ -23,7 +23,7 @@
 <div class="bbimg" id="app">
     <div class="container-fluid navbar-dark">
         <nav class="navbar navbar-expand-lg container-fluid">
-            <a class="navbar-brand "><img class="mylogo" src="/img/Mouthpiece Logo.png"></a>
+            <a class="navbar-brand "><img class="mylogo" src="./img/Mouthpiece Logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -40,7 +40,7 @@
                     </li>
                     @if (!auth()->id())
                         <li class="nav-item active">
-                            <button type="submit" class="btn btn-default rounded-0 btnsii" data-toggle="modal" data-target="#LoginModal">Login</button>
+                            <a class="nav-link" href="#" data-toggle="modal" data-target="#LoginModal">Log In </a>
                         </li>
                         <li class="nav-item">
                             <button type="submit" class="btn btn-default rounded-0 btnsii" data-toggle="modal" data-target="#SignupModal">Create new account</button>
@@ -68,7 +68,7 @@
 
         @if (!auth()->id())
         <button type="sign up"  class="btn btn-default rounded-0 btnsi" data-toggle="modal" data-target="#SignupModal">sign up</button>
-        <button type="log in"  class="btn btn-default rounded-0 btnse" data-toggle="modal" data-target="#LoginModal">login</button>
+        <button type="log in"  class="btn btn-default rounded-0 btnse" data-toggle="modal" data-target="#LoginModal">login to your account</button>
         @else
             <button class="btn btn-default rounded-0 btnse">explore our services</button>
         @endif
