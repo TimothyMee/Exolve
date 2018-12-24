@@ -16,6 +16,10 @@
                                 </div>
                             </div>
 
+                            <div v-show="loading" class="col-md-12 justify-content-center">
+                                <img src="/img/loading.svg" alt="">
+                            </div>
+
                         </div>
                     </form>
                 </div>
@@ -58,25 +62,30 @@
                     <div class="col-md-12">
                         <h4 class="cy pl-3">Search Result</h4>
                     </div>
-                    <div v-for="result in searchResult" class="col-md-4">
-                        <video width="320" height="240" controls @play="increaseViewCount(result.id)">
-                            <source :src="result.video" type="video/mp4">
-                        </video>
-                        <div>
-                            <a :href="'/video/details/'+result.id"><p class="text-white font-five mb-1">{{result.title}}</p></a>
-                            <ul class="list-inline">
-                                <li class="list-inline-item text-white">
+                    <div v-if="searchResult.length > 0" class="row col-md-12">
+                        <div v-for="result in searchResult" class="col-md-4">
+                            <video width="320" height="240" controls @play="increaseViewCount(result.id)">
+                                <source :src="result.video" type="video/mp4">
+                            </video>
+                            <div>
+                                <a :href="'/video/details/'+result.id"><p class="text-white font-five mb-1">{{result.title}}</p></a>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item text-white">
                                         <span v-for="user in users">
                                             <span v-if="user.id === result.user_id">{{user.name}}</span>
                                         </span>
-                                    <i>
-                                        <img class="" src="/img/verified.png" alt="verified" >
-                                    </i>
-                                </li>
-                                <li class="list-inline-item text-primary ml-md-3">{{result.views}} views</li>
-                                <li class="list-inline-item text-primary">{{moment(result.created_at).fromNow()}}</li>
-                            </ul>
+                                        <i>
+                                            <img class="" src="/img/verified.png" alt="verified" >
+                                        </i>
+                                    </li>
+                                    <li class="list-inline-item text-primary ml-md-3">{{result.views}} views</li>
+                                    <li class="list-inline-item text-primary">{{moment(result.created_at).fromNow()}}</li>
+                                </ul>
+                            </div>
                         </div>
+                    </div>
+                    <div v-else="" class="col-md-12">
+                        <p class="text-white">No Result Found</p>
                     </div>
                 </div>
             </div>
@@ -102,6 +111,7 @@
                 searchResult:'',
                 show : 'all',
                 filteredList:'',
+                loading:false,
             }
         },
         methods:{
@@ -136,10 +146,12 @@
             },
 
             search(){
+                this.loading = true;
                 axios.get(`/search/${this.searchInput}`)
                     .then((res)=> {
                         if(res.data.status == 200){
                             const data = res.data.data;
+                            this.loading = false;
                             this.searchResult = data;
                             console.log(this.searchResult);
                             this.show = 'search';

@@ -77974,6 +77974,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -77983,7 +77992,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             searchInput: '',
             searchResult: '',
             show: 'all',
-            filteredList: ''
+            filteredList: '',
+            loading: false
         };
     },
 
@@ -78019,9 +78029,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         search: function search() {
             var _this3 = this;
 
+            this.loading = true;
             axios.get('/search/' + this.searchInput).then(function (res) {
                 if (res.data.status == 200) {
                     var data = res.data.data;
+                    _this3.loading = false;
                     _this3.searchResult = data;
                     console.log(_this3.searchResult);
                     _this3.show = 'search';
@@ -78112,7 +78124,23 @@ var render = function() {
                       [_c("i", { staticClass: "fa fa-search" })]
                     )
                   ])
-                ])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: _vm.loading,
+                        expression: "loading"
+                      }
+                    ],
+                    staticClass: "col-md-12 justify-content-center"
+                  },
+                  [_c("img", { attrs: { src: "/img/loading.svg", alt: "" } })]
+                )
               ])
             ])
           ])
@@ -78238,87 +78266,104 @@ var render = function() {
                 })
               )
             : _vm.show === "search"
-            ? _c(
-                "div",
-                { staticClass: "row" },
-                [
-                  _vm._m(1),
-                  _vm._v(" "),
-                  _vm._l(_vm.searchResult, function(result) {
-                    return _c("div", { staticClass: "col-md-4" }, [
-                      _c(
-                        "video",
-                        {
-                          attrs: { width: "320", height: "240", controls: "" },
-                          on: {
-                            play: function($event) {
-                              _vm.increaseViewCount(result.id)
-                            }
-                          }
-                        },
-                        [
-                          _c("source", {
-                            attrs: { src: result.video, type: "video/mp4" }
-                          })
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c("div", [
-                        _c(
-                          "a",
-                          { attrs: { href: "/video/details/" + result.id } },
-                          [
-                            _c(
-                              "p",
-                              { staticClass: "text-white font-five mb-1" },
-                              [_vm._v(_vm._s(result.title))]
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c("ul", { staticClass: "list-inline" }, [
+            ? _c("div", { staticClass: "row" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _vm.searchResult.length > 0
+                  ? _c(
+                      "div",
+                      { staticClass: "row col-md-12" },
+                      _vm._l(_vm.searchResult, function(result) {
+                        return _c("div", { staticClass: "col-md-4" }, [
                           _c(
-                            "li",
-                            { staticClass: "list-inline-item text-white" },
-                            [
-                              _vm._l(_vm.users, function(user) {
-                                return _c("span", [
-                                  user.id === result.user_id
-                                    ? _c("span", [_vm._v(_vm._s(user.name))])
-                                    : _vm._e()
-                                ])
-                              }),
-                              _vm._v(" "),
-                              _vm._m(2, true)
-                            ],
-                            2
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "li",
+                            "video",
                             {
-                              staticClass:
-                                "list-inline-item text-primary ml-md-3"
+                              attrs: {
+                                width: "320",
+                                height: "240",
+                                controls: ""
+                              },
+                              on: {
+                                play: function($event) {
+                                  _vm.increaseViewCount(result.id)
+                                }
+                              }
                             },
-                            [_vm._v(_vm._s(result.views) + " views")]
+                            [
+                              _c("source", {
+                                attrs: { src: result.video, type: "video/mp4" }
+                              })
+                            ]
                           ),
                           _vm._v(" "),
-                          _c(
-                            "li",
-                            { staticClass: "list-inline-item text-primary" },
-                            [
-                              _vm._v(
-                                _vm._s(_vm.moment(result.created_at).fromNow())
+                          _c("div", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "/video/details/" + result.id }
+                              },
+                              [
+                                _c(
+                                  "p",
+                                  { staticClass: "text-white font-five mb-1" },
+                                  [_vm._v(_vm._s(result.title))]
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("ul", { staticClass: "list-inline" }, [
+                              _c(
+                                "li",
+                                { staticClass: "list-inline-item text-white" },
+                                [
+                                  _vm._l(_vm.users, function(user) {
+                                    return _c("span", [
+                                      user.id === result.user_id
+                                        ? _c("span", [
+                                            _vm._v(_vm._s(user.name))
+                                          ])
+                                        : _vm._e()
+                                    ])
+                                  }),
+                                  _vm._v(" "),
+                                  _vm._m(2, true)
+                                ],
+                                2
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "li",
+                                {
+                                  staticClass:
+                                    "list-inline-item text-primary ml-md-3"
+                                },
+                                [_vm._v(_vm._s(result.views) + " views")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "li",
+                                {
+                                  staticClass: "list-inline-item text-primary"
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm.moment(result.created_at).fromNow()
+                                    )
+                                  )
+                                ]
                               )
-                            ]
-                          )
+                            ])
+                          ])
                         ])
+                      })
+                    )
+                  : _c("div", { staticClass: "col-md-12" }, [
+                      _c("p", { staticClass: "text-white" }, [
+                        _vm._v("No Result Found")
                       ])
                     ])
-                  })
-                ],
-                2
-              )
+              ])
             : _vm._e()
         ]),
         _vm._v(" "),
