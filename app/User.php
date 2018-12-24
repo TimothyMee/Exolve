@@ -40,6 +40,11 @@ class User extends Authenticatable
         return $this->create($user);
     }
 
+    public function video()
+    {
+        return $this->hasMany('App\Video');
+    }
+
     public function edit($data)
     {
         return $this->where('id', auth()->id())
@@ -51,11 +56,16 @@ class User extends Authenticatable
 
     public function getUsers()
     {
-        return $this->where('role', 'user')->get();
+        return $this->where('role', 'user')->with('video')->get();
     }
 
     public function getAll()
     {
         return $this->all();
+    }
+
+    public function getAdmin()
+    {
+        return $this->where('role', 'admin')->get();
     }
 }

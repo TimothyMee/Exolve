@@ -98,21 +98,10 @@
                 </div>
             </div>
             <li>
-                <a href="{{route('dashboard')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Home</a>
+                <a href="{{route('admin.home')}}" class="text-white active"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Home</a>
+                <a href="{{route('admin.categories')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Categories</a>
+                {{--<a href="{{route('admin.videos')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/time-left.png"></span> Videos</a>--}}
             </li>
-            <li>
-                <a href="{{route('add-video')}}" class="text-white active"><span><img class="pr-4 pb-1" src="/img/verified.png" alt="home" ></span> Upload Video</a>
-            </li>
-            <li>
-                <a href="{{route('pending-video')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/time-left.png" alt="pending" ></span> Pending</a>
-            </li>
-            <li>
-                <a href="#" class="text-white"><span><img class="pr-4 pb-1" src="/img/analytics.png" alt="analytics" ></span> Analytics</a>
-            </li>
-            <li>
-                <a href="#" class=" text-white"><span><img class="pr-4 pb-1" src="/img/promote.png" alt="promote" ></span> Promote</a>
-            </li>
-
         </ul>
     </nav>
 
@@ -152,99 +141,57 @@
         </nav>
 
         <!--    Main form Body starts or goes here-->
-
-
-
         <div class="container-fluid">
-            <div class="row">
-
-                <div class="container bg_2">
-
-
-                    <div class="col-sm-8 property_info">
-
-
-
-                        @if (count($errors) > 0)
-                            <div class = "alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
-                       @if(session('success'))
-                            <div class="col-md-10">
-                                <div class="alert alert-success">
-                                    <p>Video "{{session('success')}}" was uploaded successfully</p>
-                                </div>
-                            </div>
-
-                            <br><br>
-
-                       @elseif(session('error'))
-                            <div class="col-md-10">
-                                <div class="alert alert-danger">
-                                    <p>Video wasn't uploaded successfully</p>
-                                </div>
-                            </div>
-
-                            <br>
-                       @endif
-
-
-                        <form action="{{route('upload-video')}}" method="post" enctype="multipart/form-data">
-
-                            {{csrf_field()}}
-
-                            <div class="form-group">
-                                <label class="text-white">Title</label>
-                                <input type="text" class="form-control rounded-0" name="title" placeholder="Enter Title">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="text-white">Category</label>
-                                <select name="category_id" class="form-control rounded-0">
-                                    @foreach($categories as $category)
-                                        <option value="{{$category['id']}}">{{$category['name']}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="text-white">Description</label>
-                                <textarea type="text" class="form-control rounded-0" name="description" placeholder="Maximum of 250 words"></textarea>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="text-white">Add tags</label>
-                                <input type="text" class="form-control rounded-0" name="tags" placeholder="Enter Tags and seperate with comma   ',' ">
-                            </div>
-
-                            <div class="form-group">
-                                <p>Max upload size is 25mb</p>
-                                <div class="col-md-4 my-2 pl-md-0 pr-md-2">
-                                    <div class="form-group">
-                                        <input type="file" class="form-control-file" id="video" name="video" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <input type="submit" class="btn btn-default rounded-0 btnsii" value="Add Video">
-                            </div>
-
-                        </form>
-
+            @if(session('success'))
+                <div class="col-md-10">
+                    <div class="alert alert-success">
+                        <p>{{session('success')}}</p>
                     </div>
+                </div>
+
+                <br><br>
+
+            @elseif(session('error'))
+                <div class="col-md-10">
+                    <div class="alert alert-danger">
+                        <p>Couldn't Remove Video. Try again later</p>
+                    </div>
+                </div>
+
+                <br>
+            @endif
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-6 col-md-offset-2">
+                    <video width="320" height="240" controls poster="img/poster3.png">
+                        <source src="{{$video[0]['video']}}" type="video/mp4">
+                    </video>
+                </div>
+                <div class="col-md-4">
+                    <h2 class="font-text-bold text-primary">{{$video[0]['title']}}</h2>
+                    <P class="text-white"> {{$video[0]['description']}} </P>
+
+                    <br><br>
+                    <h6>Category: {{$video[0]['category']['name']}}</h6>
+                    <h6 class="" style="float:left">@ {{$video[0]['user']['name']}}</h6>
+                    <h6 class="" style="">&nbsp;|&nbsp; Views {{$video[0]['views']}}</h6>
+
+                    <ul class="list-inline">
+                        <br>
+                        <p><u>Tags</u></p>
+                        @foreach(json_decode($video[0]['tags']) as $tag)
+                            <li class="list-inline-item pr-3">{{$tag}}</li>
+                        @endforeach
+                    </ul>
+
+                    @if($video[0]['isLive'] == 1)
+                        <a href="/admin/video/remove/{{$video[0]['id']}}"><button class="btn btn-danger">Drop Video</button></a>
+                    @else
+                        <a href="/admin/video/approve/{{$video[0]['id']}}"><button class="btn btn-primary">Approve</button></a>
+                    @endif
                 </div>
             </div>
         </div>
-
         <!--    main form ends here-->
-
     </div>
 </div>
 

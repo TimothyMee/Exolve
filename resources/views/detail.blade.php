@@ -18,12 +18,10 @@
 </head>
 
 <body>
-
-<!--  Banner starts here-->
-<div class="bbimg" id="app">
+<div class="bbimg" >
     <div class="container-fluid navbar-dark">
         <nav class="navbar navbar-expand-lg container-fluid">
-            <a class="navbar-brand "><img class="mylogo" src="./img/Mouthpiece Logo.png"></a>
+            <a class="navbar-brand " href="{{route('home')}}"><img class="mylogo" src="/img/Mouthpiece Logo.png"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -60,61 +58,66 @@
         </nav>
     </div>
 
-    <div class="text-center">
-        @if (count($errors) > 0)
-            <div class = "alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-            @if(session('success'))
-                <div class="col-md-10">
-                    <div class="alert alert-success">
-                        <p>Accounted Successfully</p>
-                    </div>
-                </div>
-
-                <br><br>
-
-            @elseif(session('error'))
-                <div class="col-md-10">
-                    <div class="alert alert-danger">
-                        <p>Error and try again.</p>
-                    </div>
-                </div>
-
-                <br>
-            @endif
-        <h2 class="h1y">Are you ready to go viral?</h2>
-        <p class="p1w">We provide visibility to your business irrespective of scale,optimized search<br>
-            for registered business on the platform with rating based on customer<br>
-            satisfaction</p>
-
-        @if (!auth()->id())
-        <button type="sign up"  class="btn btn-default rounded-0 btnsi" data-toggle="modal" data-target="#SignupModal">sign up</button>
-        <button type="log in"  class="btn btn-default rounded-0 btnse" data-toggle="modal" data-target="#LoginModal">login to your account</button>
-        @else
-            <button class="btn btn-default rounded-0 btnse">explore our services</button>
-        @endif
+    <div class="container-fluid" id="app">
+        <video-details video-id="{{$id}}"></video-details>
     </div>
 
-    <div class="container-fluid bg_2">
 
 
-        <div class="row pb-5">
-            <div class="col-md-12">
-                <video-component></video-component>
-            </div>
+{{--
+    <div class="container-fluid bg-black">
+        <div class="row pt-3">
+            <h6 class="font-weight-bold text-primary pl-3">Recommended</h6>
         </div>
 
+        <div class="row py-3">
+            <div class="col-md-4">
+                <video width="320" height="240" controls poster="img/poster2.png">
+                    <source src="vid/Blurry%20Video%20Of%20People%20Working.mp4" type="video/mp4">
+                </video>
+                <div>
+                    <p class="text-white font-five mb-1">World's 5 Greatest Magic Tricks Finally... </p>
+                    <ul class="list-inline">
+                        <li class="list-inline-item text-white">@Facto  <i><img class="" src="img/verified.png" alt="verified" ></i> </li>
+                        <li class="list-inline-item text-primary ml-md-3">100 views</li>
+                        <li class="list-inline-item text-primary">2 months ago</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <video width="320" height="240" controls poster="img/poster.png">
+                    <source src="vid/Blurry%20Video%20Of%20People%20Working.mp4" type="video/mp4">
+                </video>
+                <div>
+                    <p class="text-white font-five mb-1">World's 5 Greatest Magic Tricks Finally... </p>
+                    <ul class="list-inline">
+                        <li class="list-inline-item text-white">@Facto  <i><img class="" src="img/verified.png" alt="verified" ></i> </li>
+                        <li class="list-inline-item text-primary ml-md-3">100 views</li>
+                        <li class="list-inline-item text-primary">2 months ago</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <video width="320" height="240" controls poster="img/poster2.png">
+                    <source src="vid/Blurry%20Video%20Of%20People%20Working.mp4" type="video/mp4">
+                </video>
+                <div>
+                    <p class="text-white font-five mb-1">World's 5 Greatest Magic Tricks Finally... </p>
+                    <ul class="list-inline">
+                        <li class="list-inline-item text-white">@Facto  <i><img class="" src="img/verified.png" alt="verified" ></i> </li>
+                        <li class="list-inline-item text-primary ml-md-3">100 views</li>
+                        <li class="list-inline-item text-primary">2 months ago</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
     </div>
+--}}
 
 </div>
-<!--  Banner ends here-->
 
 @include('layouts.modals')
 

@@ -159,78 +159,8 @@
             <div class="row">
 
                 <div class="container bg_2">
-
-
-                    <div class="col-md-12 property_info">
-                        @if(session('success'))
-                            <div class="col-md-10">
-                                <div class="alert alert-success">
-                                    <p>{{session('success')}}</p>
-                                </div>
-                            </div>
-
-                            <br><br>
-
-                        @elseif(session('error'))
-                            <div class="col-md-10">
-                                <div class="alert alert-danger">
-                                    <p>Profile wasn't updated. Try again later</p>
-                                </div>
-                            </div>
-
-                            <br>
-                        @endif
-                        <p style="float: right; color: white"><a href="#" data-toggle="modal" data-target="#EditModal">Edit?</a></p>
-                        <div class="row">
-                            <div class="row col-md-6 text-white">
-                                <div class="col-md-12">
-                                    <h3 class="text-white">User Information</h3>
-                                    <hr>
-                                </div>
-                                <div class="col-md-7">
-                                    <h4>Name:</h4>
-                                    <p style="color: black">{{auth()->user()->name}}</p>
-
-                                    <h4>Email:</h4>
-                                    <p style="color: black">{{auth()->user()->email}}</p>
-
-                                    <h4>Phone:</h4>
-                                    <p style="color: black">{{auth()->user()->phone}}</p>
-
-                                    <h4>Username:</h4>
-                                    @if(auth()->user()->username == null)
-                                        <p style="color: black">No username has been set</p>
-                                    @else
-                                        <p style="color: black">{{auth()->user()->username}}</p>
-                                    @endif
-                                </div>
-
-                                <div class="col-md-4">
-                                    <h6>Profile Image</h6>
-                                    @if(auth()->user()->image == null)
-                                        <img class="profile-img" src="/img/user.png" alt="Profile Pic">
-                                        <p style="color: black">No image has been set</p>
-                                    @else
-                                        <img class="profile-img" src="{{auth()->user()->image}}" alt="Profile Pic">
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 text-white" style="border-left: 1px solid">
-                                <h3 class="text-white">User Statistics</h3>
-                                <hr>
-
-                                <h4>No of Videos:</h4>
-                                <p style="color: black">{{$data['videoCount']}}</p>
-
-                                <h4>No of Views:</h4>
-                                <p style="color: black">{{$data['viewCount']}}</p>
-
-                                <h4>Status:</h4>
-                                <p style="color: black">Active User</p>
-                            </div>
-                        </div>
-
+                    <div id="app">
+                        <dashboard-index></dashboard-index>
                     </div>
                 </div>
             </div>
@@ -242,53 +172,53 @@
 
 
 {{--modal--}}
-<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <div class="text-center">
-                    <img class="" src="/img/Mouthpiece%20Logo.png" width="90">
-                </div>
-                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true" class="">&times;</span>
-                </button>
-            </div>
+{{--<div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">--}}
+    {{--<div class="modal-dialog modal-dialog-centered" role="document">--}}
+        {{--<div class="modal-content">--}}
+            {{--<div class="modal-header">--}}
+                {{--<div class="text-center">--}}
+                    {{--<img class="" src="/img/Mouthpiece%20Logo.png" width="90">--}}
+                {{--</div>--}}
+                {{--<button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">--}}
+                    {{--<span aria-hidden="true" class="">&times;</span>--}}
+                {{--</button>--}}
+            {{--</div>--}}
 
-            <div class="modal-body">
-                <p class="text-center text-primary">Edit Information</p>
-                <form action="{{route('edit-profile')}}" method="post" enctype="multipart/form-data">
-                    {{csrf_field()}}
-                    <div class="form-group">
-                        <label for="" class="label">Username</label>
-                        @if(auth()->user()->username)
-                            <input type="text" class="form-control fontAwesome" name="username" value="{{auth()->user()->username}}">
-                        @else
-                            <input type="text" class="form-control fontAwesome" name="username" placeholder="Enter a username">
-                        @endif
-                    </div>
+            {{--<div class="modal-body">--}}
+                {{--<p class="text-center text-primary">Edit Information</p>--}}
+                {{--<form action="{{route('edit-profile')}}" method="post" enctype="multipart/form-data">--}}
+                    {{--{{csrf_field()}}--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label for="" class="label">Username</label>--}}
+                        {{--@if(auth()->user()->username)--}}
+                            {{--<input type="text" class="form-control fontAwesome" name="username" value="{{auth()->user()->username}}">--}}
+                        {{--@else--}}
+                            {{--<input type="text" class="form-control fontAwesome" name="username" placeholder="Enter a username">--}}
+                        {{--@endif--}}
+                    {{--</div>--}}
 
-                    <div class="form-group">
-                        <label for="" class="label">Email</label>
-                        <input type="email" class="form-control fontAwesome" name="email" value="{{auth()->user()->email}}">
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="label">Phone</label>
-                        <input type="text" class="form-control fontAwesome" name="phone" value="{{auth()->user()->phone}}">
-                    </div>
-                    <div class="form-group">
-                        <label for="" class="label">Profile Image</label>
-                        <input type="file" class="form-control-file" name="image">
-                    </div>
-                    <br><br>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-default rounded-0 px-5 mt-0">Update</button>
-                    </div>
-                </form>
-            </div>
+                    {{--<div class="form-group">--}}
+                        {{--<label for="" class="label">Email</label>--}}
+                        {{--<input type="email" class="form-control fontAwesome" name="email" value="{{auth()->user()->email}}">--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label for="" class="label">Phone</label>--}}
+                        {{--<input type="text" class="form-control fontAwesome" name="phone" value="{{auth()->user()->phone}}">--}}
+                    {{--</div>--}}
+                    {{--<div class="form-group">--}}
+                        {{--<label for="" class="label">Profile Image</label>--}}
+                        {{--<input type="file" class="form-control-file" name="image">--}}
+                    {{--</div>--}}
+                    {{--<br><br>--}}
+                    {{--<div class="text-center">--}}
+                        {{--<button type="submit" class="btn btn-default rounded-0 px-5 mt-0">Update</button>--}}
+                    {{--</div>--}}
+                {{--</form>--}}
+            {{--</div>--}}
 
-        </div>
-    </div>
-</div>
+        {{--</div>--}}
+    {{--</div>--}}
+{{--</div>--}}
 
 <!--footer area-->
 

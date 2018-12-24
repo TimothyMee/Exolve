@@ -9,17 +9,10 @@
                         <div class="row justify-content-center">
 
                             <div class="col">
-                                <div class="form-group">
-                                    <input type="text" class="form-control fontAwesome" v-model="searchInput" placeholder="search" @keyup="search()">
-                                </div>
-                            </div>
-
-                            <div class="col">
-                                <div class="form-group">
-                                    <select v-model="showcategory" id="" class="form-control" style="background-color:transparent;">
-                                        <option value="all">All</option>
-                                        <option :value="category.id" v-for="category in categories">{{category.name}}</option>
-                                    </select>
+                                <div class="row form-group">
+                                    <input type="text" class="col-md-10 form-control fontAwesome" v-model="searchInput" placeholder="search"
+                                            >
+                                    <button class="col-md-2 btn btn-default rounded-0 btnsi" style="margin-top:0px;" @click.prevent="search()"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
 
@@ -31,97 +24,59 @@
 
         <div class="row">
             <div class="col-md-9">
-                <div v-for="category in categories" v-if="showcategory === 'all' && searchInput === ''">
-                    <div class="row" v-if="category.video.length > 0">
-                        <h4 class="cy pl-3"><b>{{category.name}}</b></h4>
-                    </div>
+                <div v-if="show === 'all'">
+                    <div v-for="category in categories">
+                        <div class="row" v-if="category.video.length > 0">
+                            <h4 class="cy pl-3"><b>{{category.name}}</b></h4>
+                        </div>
 
-                    <div class="row" v-if="category.video.length > 0">
-                        <div class="col-md-4" v-for="video in category.video">
-                            <video width="320" height="240" controls @play="increaseViewCount(video.id)">
-                                <source :src="video.video" type="video/mp4">
-                            </video>
-                            <div>
-                                <p class="text-white font-five mb-1">{{video.title}}</p>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item text-white">
+                        <div class="row" v-if="category.video.length > 0">
+                            <div class="col-md-4" v-for="video in category.video">
+                                <video width="320" height="240" controls @play="increaseViewCount(video.id)">
+                                    <source :src="video.video" type="video/mp4">
+                                </video>
+                                <div>
+                                    <a :href="'/video/details/'+video.id"><p class="text-white font-five mb-1">{{video.title}}</p></a>
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item text-white">
                                         <span v-for="user in users">
                                             <span v-if="user.id === video.user_id">{{user.name}}</span>
                                         </span>
-                                        <i>
-                                            <img class="" src="/img/verified.png" alt="verified" >
-                                        </i>
-                                    </li>
-                                    <li class="list-inline-item text-primary ml-md-3">{{video.views}} views</li>
-                                    <li class="list-inline-item text-primary">{{moment(video.created_at).fromNow()}}</li>
-                                </ul>
+                                            <i>
+                                                <img class="" src="/img/verified.png" alt="verified" >
+                                            </i>
+                                        </li>
+                                        <li class="list-inline-item text-primary ml-md-3">{{video.views}} views</li>
+                                        <li class="list-inline-item text-primary">{{moment(video.created_at).fromNow()}}</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div v-for="category in categories" v-if="showcategory === category.id && searchInput === ''">
-                    <div class="row">
-                        <h4 class="cy pl-3"><b>{{category.name}}</b></h4>
+                <div v-else-if="show === 'search'" class="row">
+                    <div class="col-md-12">
+                        <h4 class="cy pl-3">Search Result</h4>
                     </div>
-
-                    <div class="row" v-if="category.video.length > 0">
-                        <div class="col-md-4" v-for="video in category.video">
-                            <video width="320" height="240" controls @play="increaseViewCount(video.id)">
-                                <source :src="video.video" type="video/mp4">
-                            </video>
-                            <div>
-                                <p class="text-white font-five mb-1">{{video.title}}</p>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item text-white">
+                    <div v-for="result in searchResult" class="col-md-4">
+                        <video width="320" height="240" controls @play="increaseViewCount(result.id)">
+                            <source :src="result.video" type="video/mp4">
+                        </video>
+                        <div>
+                            <a :href="'/video/details/'+result.id"><p class="text-white font-five mb-1">{{result.title}}</p></a>
+                            <ul class="list-inline">
+                                <li class="list-inline-item text-white">
                                         <span v-for="user in users">
-                                            <span v-if="user.id === video.user_id">{{user.name}}</span>
+                                            <span v-if="user.id === result.user_id">{{user.name}}</span>
                                         </span>
-                                        <i>
-                                            <img class="" src="/img/verified.png" alt="verified" >
-                                        </i>
-                                    </li>
-                                    <li class="list-inline-item text-primary ml-md-3">{{video.views}} views</li>
-                                    <li class="list-inline-item text-primary">{{moment(video.created_at).fromNow()}}</li>
-                                </ul>
-                            </div>
+                                    <i>
+                                        <img class="" src="/img/verified.png" alt="verified" >
+                                    </i>
+                                </li>
+                                <li class="list-inline-item text-primary ml-md-3">{{result.views}} views</li>
+                                <li class="list-inline-item text-primary">{{moment(result.created_at).fromNow()}}</li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="row text-white" v-else>
-                        <h6 class="pl-3">No video For this Category yet</h6>
-                    </div>
-                </div>
-
-                <div v-if="searchInput">
-                    <div class="row">
-                        <h4 class="cy pl-3"><b>Search Result</b></h4>
-                    </div>
-
-                    <div class="row" v-if="filteredList.length > 0">
-                        <div class="col-md-4" v-for="video in filteredList">
-                            <video width="320" height="240" controls @play="increaseViewCount(video.id)">
-                                <source :src="video.video" type="video/mp4">
-                            </video>
-                            <div>
-                                <p class="text-white font-five mb-1">{{video.title}}</p>
-                                <ul class="list-inline">
-                                    <li class="list-inline-item text-white">
-                                        <span v-for="user in users">
-                                            <span v-if="user.id === video.user_id">{{user.name}}</span>
-                                        </span>
-                                        <i>
-                                            <img class="" src="/img/verified.png" alt="verified" >
-                                        </i>
-                                    </li>
-                                    <li class="list-inline-item text-primary ml-md-3">{{video.views}} views</li>
-                                    <li class="list-inline-item text-primary">{{moment(video.created_at).fromNow()}}</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row text-white" v-else>
-                        <h6 class="pl-3">Couldn't find searched Video</h6>
                     </div>
                 </div>
             </div>
@@ -144,7 +99,8 @@
               categories:'',
                 users:'',
                 searchInput:'',
-                showcategory : 'all',
+                searchResult:'',
+                show : 'all',
                 filteredList:'',
             }
         },
@@ -180,26 +136,20 @@
             },
 
             search(){
-                if(this.showcategory === 'all'){
-                    this.categories.forEach(function (category){
-                        let categoryVideo = category.video;
-
-                        this.filteredList = categoryVideo.filter(video => {
-                            return video.title.toLowerCase().includes(this.searchInput.toLowerCase())
-                        })
-                    }.bind(this));
-                }else{
-                    this.categories.forEach(function (category){
-                       if(category.id === this.showcategory){
-                            let categoryVideo = category.video;
-
-                            this.filteredList = categoryVideo.filter(video => {
-                               return video.title.toLowerCase().includes(this.searchInput.toLowerCase())
-                            })
-                       }
-                    }.bind(this));
-
-                }
+                axios.get(`/search/${this.searchInput}`)
+                    .then((res)=> {
+                        if(res.data.status == 200){
+                            const data = res.data.data;
+                            this.searchResult = data;
+                            console.log(this.searchResult);
+                            this.show = 'search';
+                        }else{
+                            console.log(res.data.data);
+                        }
+                    })
+                    .catch((err)=>{
+                        console.log(err);
+                    })
             },
 
             increaseViewCount(id){

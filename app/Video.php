@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     protected $fillable = ['user_id', 'title', 'category_id', 'description', 'status', 'admin_id',
-                            'video', 'likes', 'views', 'comments', 'isLive'];
+                            'video', 'tags', 'views', 'comments', 'isLive'];
 
     public function category()
     {
@@ -17,6 +17,11 @@ class Video extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function comment()
+    {
+        return $this->hasMany('App\Comment');
     }
 
     public function createNew($data)
@@ -34,12 +39,14 @@ class Video extends Model
     public function getVideo($id)
     {
         return $this->where('id', $id)
+                    ->with('category','user')
                     ->get();
     }
 
     public function getVideos()
     {
         return $this->where('user_id', auth()->id())
+                    ->with('user', 'category')
                     ->get();
     }
 
@@ -68,6 +75,12 @@ class Video extends Model
                     ->increment('views');
     }
 
+    public function increaseCommentCount($id)
+    {
+        return $this->where('id', $id)
+            ->increment('comments');
+    }
+
     public function getUnapproved()
     {
         return $this->where('status', "pending")
@@ -79,5 +92,18 @@ class Video extends Model
     {
         return $this->where('id', $id)
                     ->update(['status' => 'approved', 'isLive' => 1]);
+    }
+
+    public function Remove($id)
+    {
+        return $this->where('id', $id)
+            ->update(['status' => 'pending', 'isLive' => 0]);
+    }
+
+    public function search($param)
+    {
+        return $this->where('title', 'like', "%{$param}%")
+            ->orWhere('tags', 'like', "%{$param}%")
+            ->get();
     }
 }

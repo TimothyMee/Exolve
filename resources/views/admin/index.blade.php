@@ -100,8 +100,7 @@
             <li>
                 <a href="{{route('admin.home')}}" class="text-white active"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Home</a>
                 <a href="{{route('admin.categories')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/home.png" alt="home" ></span> Categories</a>
-                <a href="{{route('admin.videos')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/time-left.png"></span> Videos</a>
-
+                {{--<a href="{{route('admin.videos')}}" class="text-white"><span><img class="pr-4 pb-1" src="/img/time-left.png"></span> Videos</a>--}}
             </li>
         </ul>
     </nav>

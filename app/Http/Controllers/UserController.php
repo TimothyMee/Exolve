@@ -2,23 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
     public function create(Request $request, User $user)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|string| max:100',
+            'email' => 'required|email',
+            'phone' => 'required',
+            'password' => 'required|confirmed|min:5'
+        ]);
+
         try
         {
-            $validatedData = $request->validate([
-                'name' => 'required|string| max:100',
-                'email' => 'required|email',
-                'phone' => 'required',
-                'password' => 'required|confirmed|min:5'
-            ]);
             $newUser = $user->createNew($validatedData);
+            Mail::to($validatedData['email'])->send(new WelcomeMail($validatedData['name']));
+
             return redirect()->intended(route('home'));
 
         }
@@ -36,6 +41,10 @@ class UserController extends Controller
                 if (auth()->user()->role == "user")
                 {
                     return redirect()->intended(route('dashboard'));
+                }
+                elseif (auth()->user()->role == "admin")
+                {
+                    return redirect()->intended(route('admin.home'));
                 }
             }
             return redirect()->back()->with('error', 'Identification No and Password Combination Incorrect')->withInput();
@@ -77,8 +86,7 @@ class UserController extends Controller
                 $request['image'] = asset('storage/images/'. $fileName);
 
                 $user->edit($request);
-                return redirect()->back()->with('
-                ', 'Profile Edited Successfully');
+                return redirect()->back()->with('', 'Profile Edited Successfully');
             }
         }
         catch (\Exception $e)

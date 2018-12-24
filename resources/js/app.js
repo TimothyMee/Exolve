@@ -12,6 +12,7 @@ window.Vue = require('vue');
 import Notifications from 'vue-notification'
 import moment from 'moment'
 import {ClientTable, ServerTable, Event} from 'vue-tables-2';
+import StarRating from 'vue-star-rating';
 
 
 Vue.use(Notifications);
@@ -23,9 +24,10 @@ Vue.use(ClientTable, {}, false, 'bootstrap4','default');
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
-
+Vue.component('star-rating', StarRating);
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 Vue.component('video-component', require('./components/video.vue'));
+Vue.component('video-details', require('./components/VideoDetails.vue'));
 Vue.component('dashboard-index', require('./components/dashboard/Index.vue'));
 Vue.component('admin-index', require('./components/admin/Index.vue'));
 
